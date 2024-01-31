@@ -16,29 +16,57 @@ import { useNavigate } from "react-router-dom";
 //     nav("/Dashboard");
 //     }, [nav]);
 
-  const handleLogin = async () => {
+//   const handleLogin = async () => {
+//     const info = {
+//       Gebruikersnaam: usernameRef.current.value,
+//       Wachtwoord: passwordRef.current.value
+//     };
+
+//     try {
+//       const response = await axios
+//       .post("http://localhost:5000/api/login", info)
+//       .then(response => {
+//         // const token = response.data.api_key;
+//         SetAuthToken(response.data);
+
+//     }).catch((err) => {
+//     console.log(err.toJSON());
+// });;
+//       // Voeg hier verdere logica toe, zoals het opslaan van tokens, rollen, etc.
+//       console.log("Inloggen gelukt", response.data);
+//     } catch (err) {
+//       console.error("Fout tijdens inloggen", err);
+//       setError("Gebruikersnaam of wachtwoord is onjuist");
+//     }
+//   };
+
+const handleLogin = async () => {
     const info = {
-      Gebruikersnaam: usernameRef.current.value,
-      Wachtwoord: passwordRef.current.value
+        Gebruikersnaam: usernameRef.current.value,
+        Wachtwoord: passwordRef.current.value
     };
 
     try {
-      const response = await axios
-      .post("http://localhost:5000/api/login", info)
-      .then(response => {
-        // const token = response.data.api_key;
+        const response = await axios.post("http://localhost:5000/api/login", info);
+        
+        // In dit punt is de inlogpoging geslaagd
         SetAuthToken(response.data);
 
-    }).catch((err) => {
-    console.log(err.toJSON());
-});;
-      // Voeg hier verdere logica toe, zoals het opslaan van tokens, rollen, etc.
-      console.log("Inloggen gelukt", response.data);
+        // Voer verdere logica uit, zoals navigeren naar een ander scherm
+        // Of opslaan van gebruikersgegevens in de lokale opslag
+
+        console.log("Inloggen gelukt", response.data);
+
+        // Bijvoorbeeld, navigeer naar het dashboard:
+        // nav("/Dashboard");
     } catch (err) {
-      console.error("Fout tijdens inloggen", err);
-      setError("Gebruikersnaam of wachtwoord is onjuist");
+        console.error("Fout tijdens inloggen", err);
+
+        // Handel de fout af, bijvoorbeeld, toon een foutmelding
+        setError("Gebruikersnaam of wachtwoord is onjuist");
     }
-  };
+};
+
 
   return (
     <div className="login-container">
