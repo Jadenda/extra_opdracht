@@ -25,7 +25,7 @@ const handleLogin = async () => {
     };
 
     try {
-        const response = await axios.post(apiPath + "api/auth/login", info);
+        const response = await axios.post(apiPath + "/login", info);
         
         SetAuthToken(response.data);
         console.log("Inloggen gelukt", response.data);
@@ -34,7 +34,6 @@ const handleLogin = async () => {
     } catch (err) {
         console.log(err);
 
-        // Handel de fout af, bijvoorbeeld, toon een foutmelding
         setError("Gebruikersnaam of wachtwoord is onjuist");
     }
 };
