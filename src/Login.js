@@ -4,41 +4,19 @@ import { SetAuthToken } from "./Helper/AuthToken";
 import {apiPath} from "./Helper/Api";
 import useLocalStorage from "use-local-storage";
 
+import "./CSS/StichtingTheme.css"
 import { useNavigate } from "react-router-dom";
 
  const Login = () => {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const [error, setError] = useState(null);
-//   const nav = useNavigate();
+  // const nav = useNavigate();
+  // const response = await axios.post("http://localhost:5000/api/login", info);
 
 //   useEffect(() => {
 //     nav("/Dashboard");
 //     }, [nav]);
-
-//   const handleLogin = async () => {
-//     const info = {
-//       Gebruikersnaam: usernameRef.current.value,
-//       Wachtwoord: passwordRef.current.value
-//     };
-
-//     try {
-//       const response = await axios
-//       .post("http://localhost:5000/api/login", info)
-//       .then(response => {
-//         // const token = response.data.api_key;
-//         SetAuthToken(response.data);
-
-//     }).catch((err) => {
-//     console.log(err.toJSON());
-// });;
-//       // Voeg hier verdere logica toe, zoals het opslaan van tokens, rollen, etc.
-//       console.log("Inloggen gelukt", response.data);
-//     } catch (err) {
-//       console.error("Fout tijdens inloggen", err);
-//       setError("Gebruikersnaam of wachtwoord is onjuist");
-//     }
-//   };
 
 const handleLogin = async () => {
     const info = {
@@ -47,20 +25,14 @@ const handleLogin = async () => {
     };
 
     try {
-        const response = await axios.post("http://localhost:5000/api/login", info);
+        const response = await axios.post(apiPath + "api/auth/login", info);
         
-        // In dit punt is de inlogpoging geslaagd
         SetAuthToken(response.data);
-
-        // Voer verdere logica uit, zoals navigeren naar een ander scherm
-        // Of opslaan van gebruikersgegevens in de lokale opslag
-
         console.log("Inloggen gelukt", response.data);
 
-        // Bijvoorbeeld, navigeer naar het dashboard:
-        // nav("/Dashboard");
+       // nav("/Dashboard");
     } catch (err) {
-        console.error("Fout tijdens inloggen", err);
+        console.log(err);
 
         // Handel de fout af, bijvoorbeeld, toon een foutmelding
         setError("Gebruikersnaam of wachtwoord is onjuist");
@@ -68,6 +40,16 @@ const handleLogin = async () => {
 };
 
 
+  // axios
+  //     .post(apiPath + "Login", info)
+  //     .then(response => {
+  //         // const token = response.data.api_key;
+  //         SetAuthToken(response.data);
+
+      // }).catch((err) => {
+      // console.log(err.toJSON());
+
+      
   return (
     <div className="login-container">
       <h2>Login</h2>
@@ -95,7 +77,7 @@ const handleLogin = async () => {
       <button 
       aria-label="Log in"
       type="button" 
-      onClick={handleLogin }>
+      onClick={handleLogin}>
         Log in
       </button>
     </div>
@@ -104,19 +86,3 @@ const handleLogin = async () => {
 
 export default Login;
 
-// () => {
-//     const info = {
-//         Gebruikersnaam: usernameRef.current.value,
-//         Wachtwoord: passwordRef.current.value
-//     };
-
-//     axios
-//         .post(apiPath + "Login", info)
-//         .then(response => {
-//             // const token = response.data.api_key;
-//             SetAuthToken(response.data);
-
-//         }).catch((err) => {
-//         console.log(err.toJSON());
-//     });
-// }

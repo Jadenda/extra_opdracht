@@ -1,0 +1,345 @@
+﻿/* Lets use vw for most sizes for containers with a minimum size 
+and wrap so stuff automatically moves down if it gets to small */
+:root {
+    /* in comments the names that are used in figma */
+    --background: #ffffff; /*Background*/
+    --default: #111329; /*Default*/
+    --accent-1: #2b50eb; /*Logo blue*/
+    --accent-2: #1ca883; /*Logo green*/
+    --accent-3: #ffb800; /*Button 2*/
+    --accent-4: #21cea1; /*Secondary*/
+    --header-text-1: #111329;
+    --header-text-2: #ffffff;
+    --font-size: 16px;
+    --logo-size: 5vw;
+    --header-column-gap: 64px;
+    --header-padding-side: 32px;
+}
+
+/* Todo make dark theme (currently the same as light) */
+[data-theme="dark"] {
+    /* in comments the names that are used in figma */
+    --background: #111329; /*Background*/
+    --default: #ffffff; /*Default*/
+    --accent-1: #2b50eb; /*Logo blue*/
+    --accent-2: #1ca883; /*Logo green*/
+    --accent-3: #ffb800; /*Button 2*/
+    --accent-4: #21cea1; /*Secondary*/
+    --header-text-1: #111329;
+    --header-text-2: #ffffff;
+}
+
+/*maybe add stuff like container widths, min sizes padding etc. as well*/
+[data-font-size="big"] {
+    --font-size: 20px;
+}
+
+[data-font-size="bigger"] {
+    --font-size: 24px;
+}
+
+[data-font-size="biggest"] {
+    --font-size: 28px;
+}
+
+.Main {
+    background: var(--background);
+    color: var(--default);
+    font-size: var(--font-size);
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+p {
+    font-size: 1em;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+h3 {
+    font-size: 1.25em;
+    margin: 0;
+}
+
+.Button-body {
+    margin: 1.5em;
+    text-align: center;
+    align-items: center;
+}
+
+/* Todo Button stuff here */
+button {
+    all: unset;
+    align-items: center;
+    background-color: var(--accent-2);
+    color: var(--default);
+    border-radius: 16px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 8px;
+    min-height: 2em;
+    justify-content: center;
+    padding: 8px 0.5em;
+    position: relative;
+    width: 10em;
+}
+
+button:hover {
+    background: var(--accent-1);
+    color: var(--background);
+}
+
+header {
+    position: sticky;
+    top: 0;
+    background: var(--accent-1);
+    color: var(--header-text-2);
+    align-items: flex-start;
+    /*display: flex;*/
+    flex-direction: column;
+    width: 100%;
+    padding-top: 16px;
+    z-index: 200;
+}
+
+.header-text {
+    text-align: center;
+    width: fit-content;
+}
+
+.Header {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.Header-top {
+    align-items: center;
+    align-self: stretch;
+    display: flex;
+    /*flex: 0 0 auto;*/
+    column-gap: var(--header-column-gap);
+    padding: 0px var(--header-padding-side);
+    flex: 1;
+}
+
+.Logo-header {
+    width: var(--logo-size);
+    pointer-events: none;
+}
+
+.Info-header {
+    align-items: center;
+    /*display: flex;*/
+
+    /*flex: 1;*/
+    column-gap: 8px;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.Button-header {
+    background: var(--accent-3);
+    color: var(--header-text-1);
+    font-size: 1.25em;
+    height: 1.5em;
+}
+
+.Button-header:hover {
+    background: var(--accent-4);
+}
+
+.Button-header:active {
+    color: var(--header-text-2);
+    background: var(--header-text-1);
+}
+
+.Button-header-small {
+    background: var(--accent-3);
+    color: var(--header-text-1);
+    font-size: 1.25em;
+    width: 1.5em;
+    height: 1.5em;
+    margin: 1em;
+}
+
+.Button-header-small:hover {
+    background: var(--accent-4);
+}
+
+.Button-header-small:active {
+    color: var(--header-text-2);
+    background: var(--header-text-1);
+}
+
+.Navigation {
+    align-items: center;
+    align-self: stretch;
+    background-color: var(--accent-1);
+    display: flex;
+    flex: 0 0 auto;
+    gap: 0px;
+    padding: 0px 32px;
+    position: relative;
+    width: fit-content;
+}
+
+.Navigation-spacer {
+    align-self: stretch;
+    position: relative;
+    width: var(--logo-size);
+    padding-right: var(--header-column-gap);
+    /*+ --header-column-gap + --header-padding_side);*/
+    /*width: var(--logo-size) + var(--header-column-gap) + var(--header-padding-side);*/
+}
+
+.Button-navigation {
+    all: unset;
+    align-items: center;
+    background-color: var(--accent-1);
+    color: var(--header-text-2);
+    border-radius: 0px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 0px;
+    justify-content: center;
+    padding: 0px 0px;
+    position: relative;
+    height: 3em;
+    width: 14em;
+    /*width: 7.5vw;*/
+}
+
+.Button-navigation:hover {
+    background: var(--accent-4);
+    color: var(--default);
+}
+
+.Button-navigation:active {
+    background: var(--background);
+    color: var(--default);
+}
+
+.Button-navigation-current {
+    background: var(--background);
+    color: var(--default);
+}
+
+.Body {
+    font-size: 1em;
+    z-index: 100;
+    display: flex;
+    /*padding-left: 32px;*/
+    /*padding-right: 32px;*/
+    gap: 16px;
+    /*margin: 2em;*/
+    margin-top: 2em;
+    margin-bottom: 2em;
+    width: 100%;
+    justify-content: center;
+    flex: 1;
+}
+
+.Title {
+    flex: 1;
+}
+
+header ul {
+    padding: 0;
+    margin: 0;
+}
+
+header ul li {
+    text-align: left;
+    display: inline-block;
+    list-style: none;
+}
+
+.inputFontSize {
+    font-size: var(
+        --font-size
+    ); /*Voornamelijk voor de login-velden in Login.js*/
+}
+
+/* ... (existing styles remain unchanged) */
+
+[data-theme="dark"] .header h3 {
+    color: #ffffff; /* Set the color for the dark theme */
+}
+
+[data-theme="light"] .header h3 {
+    color: #111329; /* Set the color for the light theme */
+}
+
+.Section-border {
+    border: 2px solid var(--accent-1);
+    border-radius: 32px;
+    padding: 1em;
+    margin: 1em;
+    /*width: 100%;*/
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: column;
+}
+
+.Button-Left {
+    margin: 1.5em;
+    text-align: center;
+    align-items: flex-start;
+}
+
+.Section-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.Section-list-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.Section-list-column-names {
+    display: flex;
+    flex-direction: row;
+}
+
+.Ervaringsdeskundige-Antwoorden {
+    /* list-style-type: none; */
+    list-style-type: none;
+}
+
+.Small-remove-button {
+    /* margin: 1em; */
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 1em;
+    margin-right: 1em;
+    padding-top: 0;
+    padding-left: 0.5em;
+    padding-bottom: 0;
+    padding-right: 0.5em;
+    height: fit-content;
+    width: fit-content;
+}
+
+.Question {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+}
+
+.Question-info {
+    display: flex;
+    flex-direction: column;
+}

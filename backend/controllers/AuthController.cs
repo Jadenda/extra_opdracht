@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
+
 
 namespace api.Controllers;
 
@@ -24,7 +26,7 @@ public class AuthController : ControllerBase
 
         if (existingUser != null)
         {
-            return Ok(new { /* any additional information you want to return */ });
+            return Ok(new { Token = "your_generated_token" });
         }
         else
         {
