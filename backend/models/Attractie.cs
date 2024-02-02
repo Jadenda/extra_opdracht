@@ -8,7 +8,5 @@ public class Attractie
     public string AfbeeldingUrl { get; set; }
 
     public TimeSpan Duration { get; set; }
-    public List<VirtualQueue> VirtualQueue { get; set; } = new List<VirtualQueue>();
-
 
 }

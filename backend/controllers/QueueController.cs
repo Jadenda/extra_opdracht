@@ -47,8 +47,12 @@ namespace api.Controllers
                 if (existingQueueEntry != null)
                     return BadRequest("Je staat al in de rij voor deze attractie");
 
-                // Check if the queue is full
-                if (attraction.VirtualQueue.Count < attraction.Capaciteit)
+                var queueCountForAttraction = await _context.VirtualQueue
+                .Where(q => q.AttractionId == attractionId)
+                .CountAsync();
+
+                //is attractie vol
+                if (queueCountForAttraction < attraction.Capaciteit)
                 {
                     var entryTime = DateTime.Now;
                     var queueEntry = new VirtualQueue
