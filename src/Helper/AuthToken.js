@@ -2,9 +2,9 @@ import axios from "axios";
 
 export const SetAuthToken = (data) => {
   console.log(data);
-  if (data && data.token && data.userId) { // Updated to use lowercase properties
+  if (data && data.token && data.userId) { 
     const token = data.token;
-    const userId = data.userId; // Updated to use lowercase properties
+    const userId = data.userId; 
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

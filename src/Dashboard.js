@@ -58,8 +58,33 @@ import "./CSS/style.css";
   
       const response = await axios.post(
         apiPath + "api/Queue/join",
-        { AttractieId: attractieId, UserId: userId },
+        { AttractionId: attractieId, UserId: userId },
         {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      console.log(response.data);
+      // Refresh the list of attractions after joining the queue
+      getAttracties();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const verlaatRij = async (attractieId) => {
+    try {
+      const userId = parseInt(localStorage.getItem("userId"), 10);
+
+      console.log("Verlaat queue met AttractieId:", attractieId);
+      console.log("Verlaat met User Id:", userId);
+
+      const response = await axios.delete(
+        apiPath + "api/Queue/leave",
+        {
+          data: { AttractionId: attractieId, UserId: userId },
           headers: {
             'Content-Type': 'application/json',
           },
@@ -67,7 +92,7 @@ import "./CSS/style.css";
       );
 
       console.log(response.data);
-      // Refresh the list of attractions after joining the queue
+      // Refresh the list of attractions after leaving the queue
       // getAttracties();
     } catch (error) {
       console.error(error);
@@ -92,7 +117,8 @@ import "./CSS/style.css";
             <p>{`Duur: ${(attraction.duration)}`}</p>
             <p>{`${(attraction.beschrijving)}`}</p>
             <button onClick={() => neemDeel(attraction.attractieId)}>Deelnemen aan wachtrij</button>
-            
+            <button onClick={() => verlaatRij(attraction.attractieId)}>
+              Verlaat wachtrij</button>
           </li>
         ))}
       </ul>

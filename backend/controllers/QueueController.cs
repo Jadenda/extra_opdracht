@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
 
-namespace api.Controllers
-{
+    namespace api.Controllers
+    {
     [Route("api/[controller]")]
     [ApiController]
     public class QueueController : ControllerBase
@@ -24,6 +24,10 @@ namespace api.Controllers
             {
                 var attractionId = request.AttractionId;
                 var userId = request.UserId;
+
+                Console.WriteLine("Received request:");
+        Console.WriteLine($"AttractionId: {request.AttractionId}, UserId: {request.UserId}");
+
 
                 var userQueueCount = await _context.VirtualQueue
                 .Where(q => q.UserId == userId)
@@ -124,4 +128,4 @@ namespace api.Controllers
             }
         }
     }
-}
+    }
