@@ -25,17 +25,27 @@ namespace api.Controllers
                 var attractionId = request.AttractionId;
                 var userId = request.UserId;
 
+                var userQueueCount = await _context.VirtualQueue
+                .Where(q => q.UserId == userId)
+                .CountAsync();
+
+            // Check if the user has already joined two attractions
+            if (userQueueCount >= 2)
+            {
+                return BadRequest("Je kan maar bij 2 attracties tegelijkertijd wachten");
+            }
+
                 var attraction = await _context.Attracties.FindAsync(attractionId);
 
                 if (attraction == null)
-                    return NotFound("Attraction not found");
+                    return NotFound("Attractie niet gevonden");
 
                 // Check if the user is already in the queue for the same attraction
                 var existingQueueEntry = await _context.VirtualQueue
                     .FirstOrDefaultAsync(q => q.UserId == userId && q.AttractionId == attractionId);
 
                 if (existingQueueEntry != null)
-                    return BadRequest("User is already in the queue for this attraction.");
+                    return BadRequest("Je staat al in de rij voor deze attractie");
 
                 // Check if the queue is full
                 if (attraction.VirtualQueue.Count < attraction.Capaciteit)
@@ -54,7 +64,7 @@ namespace api.Controllers
                 }
                 else
                 {
-                    return BadRequest("The attraction queue is full.");
+                    return BadRequest("De rij is helaas vol");
                 }
             }
             catch (Exception ex)
@@ -100,7 +110,7 @@ namespace api.Controllers
                 _context.VirtualQueue.Remove(queueEntry);
                 await _context.SaveChangesAsync();
 
-                return Ok($"User {userId} has left the queue for attraction {attractionId}.");
+                return Ok($"User {userId} heeft de rij verlaten van de {attractionId}.");
             }
             catch (Exception ex)
             {

@@ -3,8 +3,8 @@ import axios from "axios";
 import { apiPath } from "./Helper/Api";
 import { useNavigate } from "react-router-dom";
 import { SetAuthToken } from "./Helper/AuthToken";
-// import "./CSS/style.css";
-import "./CSS/Theme.css";
+import "./CSS/style.css";
+// import "./CSS/Theme.css";
 
   const Dashboard = () => {
   const [attractions, setAttractions] = useState([]);
@@ -33,9 +33,9 @@ import "./CSS/Theme.css";
       case 1:
         return "Images/reuzenrad.jpg";
       case 2:
-        return "Images/attractie2.jpg";
+        return "Images/LostGravity.jpg";
       case 3:
-        return "Images/attractie3.jpg";
+        return "Images/baron.jpg";
       default:
         return "Images/default.jpg";
     }
@@ -75,22 +75,24 @@ import "./CSS/Theme.css";
   };
 
   return (
-    <div>
-      <h2>Dashboard</h2>
+    <div id="Attracties">
+      <h3>Dashboard</h3>
       <ul className="attracties">
         {attractions.map((attraction) => (
-          <li key={attraction.attractieId}>
+          <li key={attraction.attractieId} className="attractie-box">
             <h3>{attraction.Naam}</h3>
             <img
               src={getAttractionImage(attraction.attractieId)}
               alt={`Afbeelding van ${attraction.Naam}`}
               style={{ maxWidth: "200px", maxHeight: "200px" }}
             />
-            <p>{`id: ${attraction.attractieId || "Not available"}`}</p>
-            <p>{`Virtuele rij: ${attraction.VirtualQueue || "Not available"}`}</p>
+            <p>{`Naam: ${attraction.naam || "Not available"}`}</p>
+            <p>{`Virtuele rij: ${attraction.VirtualQueue || "Er is geen rij"}`}</p>
             <p>{`Capaciteit: ${attraction.capaciteit || "Not available"}`}</p>
             <p>{`Duur: ${(attraction.duration)}`}</p>
-            <button onClick={() => neemDeel(attraction.attractieId)}>Neem deel aan wachtrij</button>
+            <p>{`${(attraction.beschrijving)}`}</p>
+            <button onClick={() => neemDeel(attraction.attractieId)}>Deelnemen aan wachtrij</button>
+            
           </li>
         ))}
       </ul>
