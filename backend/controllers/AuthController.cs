@@ -34,4 +34,14 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Invalid credentials" });
         }
     }
+
+    [HttpGet("gebruikers")]
+public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+{
+    var users = await _context.Users
+        .Include(u => u.VirtualQueue) 
+        .ToListAsync();
+
+    return Ok(users);
+}
 }
