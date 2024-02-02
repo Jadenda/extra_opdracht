@@ -19,15 +19,14 @@ namespace api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Attractie>>> GetAttractions()
         {
-            var attractions = await _context.Attracties.Include(a => a.VirtualQueue).ToListAsync();
+            var attractions = await _context.Attracties.ToListAsync();
             return Ok(attractions);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Attractie>> GetAttraction(int id)
         {
-            var attraction = await _context.Attracties.Include(a => a.VirtualQueue) // Include related VirtualQueue
-        .FirstOrDefaultAsync(a => a.AttractieId == id);
+            var attraction = await _context.Attracties.FindAsync(id);
 
             if (attraction == null)
             {
