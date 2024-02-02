@@ -3,27 +3,8 @@ import axios from "axios";
 import { apiPath } from "./Helper/Api";
 import { useNavigate } from "react-router-dom";
 import { SetAuthToken } from "./Helper/AuthToken";
-
-const CountdownTimer = ({ duration }) => {
-  const [remainingTime, setRemainingTime] = useState(duration);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setRemainingTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [duration]);
-
-  const formatDuration = (duration) => {
-    const hours = Math.floor(duration / 3600);
-    const minutes = Math.floor((duration % 3600) / 60);
-    const seconds = duration % 60;
-    return `${hours > 0 ? hours + "h " : ""}${minutes > 0 ? minutes + "m " : ""}${seconds}s`;
-  };
-
-  return <span>{formatDuration(remainingTime)}</span>;
-};
+// import "./CSS/style.css";
+import "./CSS/Theme.css";
 
   const Dashboard = () => {
   const [attractions, setAttractions] = useState([]);
@@ -31,6 +12,8 @@ const CountdownTimer = ({ duration }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+  console.log("Stored User Id:", storedUserId);
     getAttracties();
   }, []);
 
@@ -58,29 +41,44 @@ const CountdownTimer = ({ duration }) => {
     }
   };
 
-  const getTimerText = (attraction) => {
-    if (attraction.duur) {
-      return <CountdownTimer duration={attraction.duur} />;
-    } else {
-      return 'Not available';
-    }
-  };
+  // const getTimerText = (attraction) => {
+  //   if (attraction.duur) {
+  //     return <CountdownTimer duration={attraction.duur} />;
+  //   } else {
+  //     return 'Not available';
+  //   }
+  // };
 
   const neemDeel = async (attractieId) => {
     try {
-        const response = await axios.post(apiPath + `api/Queue/join/${attractieId}`);
-        console.log(response.data);
-        // Refresh the list of attractions after joining the queue
-        // getAttracties();
+      const userId = parseInt(localStorage.getItem("userId"), 10);
+      // const attractieId = attractions.attractieId;
+
+      console.log("Join queue met AttractieId:", attractieId);
+      console.log("Join met User Id:", userId);
+
+      const response = await axios.post(
+        apiPath + "api/Queue/join",
+        { AttractieId: attractieId, UserId: userId },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log(response.data);
+      // Refresh the list of attractions after joining the queue
+      getAttracties();
     } catch (error) {
-        console.error("Error joining the queue", error);
+      console.error(error);
     }
-};
+  };
 
   return (
     <div>
       <h2>Dashboard</h2>
-      <ul>
+      <ul className="attracties">
         {attractions.map((attraction) => (
           <li key={attraction.attractieId}>
             <h3>{attraction.Naam}</h3>
@@ -92,7 +90,7 @@ const CountdownTimer = ({ duration }) => {
             <p>{`id: ${attraction.attractieId || "Not available"}`}</p>
             <p>{`Virtuele rij: ${attraction.VirtualQueue || "Not available"}`}</p>
             <p>{`Capaciteit: ${attraction.capaciteit || "Not available"}`}</p>
-            <p>{`Duur: ${getTimerText(attraction)}`}</p>
+            <p>{`Duur: ${(attraction.duration)}`}</p>
             <button onClick={() => neemDeel(attraction.attractieId)}>Neem deel aan wachtrij</button>
           </li>
         ))}
