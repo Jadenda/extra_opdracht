@@ -1,5 +1,4 @@
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
 
 export const SetAuthToken = (data) => {
   console.log(data);
@@ -17,11 +16,11 @@ export const SetAuthToken = (data) => {
 };
 
 
-  export const GetAuthTokenUser = () => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
-  
-    if (token === null || userId === null) return false;
-  
-    return { token, userId };
-  };
+export const GetAuthTokenUser = () => {
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
+
+  if (token === null || userId === null) return false;
+
+  return { token, userId };
+};

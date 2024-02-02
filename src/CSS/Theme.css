@@ -60,3 +60,7 @@
 .text-accent {
     color: var(--accent);
 }
+
+.attracties{
+    list-style-type: none;
+}

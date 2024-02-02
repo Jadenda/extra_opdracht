@@ -65,22 +65,24 @@ import { useNavigate } from "react-router-dom";
       type="button" 
       onClick={async () => {
         const info = {
-            Gebruikersnaam: usernameRef.current.value,
-            Wachtwoord: passwordRef.current.value
+          Gebruikersnaam: usernameRef.current.value,
+          Wachtwoord: passwordRef.current.value,
         };
-    
+
         try {
-            const response = await axios.post(apiPath + "api/Auth/login", info);
-            
-            SetAuthToken(response.data);
-            console.log("Inloggen gelukt", response.data);
-    
-            navigate("/dashboard");
+          const response = await axios.post(apiPath + "api/Auth/login", info);
+
+          SetAuthToken(response.data);
+
+          console.log("Inloggen gelukt", response.data);
+
+          navigate("/dashboard");
         } catch (err) {
-            console.log(err);
-    
-            setError("Gebruikersnaam of wachtwoord is onjuist");
-        }}}>
+          console.log(err);
+          setError("Gebruikersnaam of wachtwoord is onjuist");
+        }
+      }}
+        >
         Log in
       </button>
     </div>

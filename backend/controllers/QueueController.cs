@@ -17,48 +17,53 @@ namespace api.Controllers
             _context = context;
         }
 
-    [HttpPost("join/{AttractieId}")]
-    public async Task<ActionResult<VirtualQueue>> JoinQueue(int AttractieId)
-    {
-        try
+        [HttpPost("join")]
+        public async Task<ActionResult<VirtualQueue>> JoinQueue([FromBody] VirtualQueue request)
         {
-            var attraction = await _context.Attracties.FindAsync(AttractieId);
-
-            if (attraction == null)
-                return NotFound();
-
-            // volgende user ID
-            var nextUserId = _context.Users.Max(u => u.Id) + 1;
-
-            // Controleer of de gebruiker al in de wachtrij staat voor dezelfde attractie
-            if (attraction.VirtualQueue.Count < attraction.Capaciteit)
+            try
             {
-                var entryTime = DateTime.Now;
-                var queueEntry = new VirtualQueue
+                var attractionId = request.AttractionId;
+                var userId = request.UserId;
+
+                var attraction = await _context.Attracties.FindAsync(attractionId);
+
+                if (attraction == null)
+                    return NotFound("Attraction not found");
+
+                // Check if the user is already in the queue for the same attraction
+                var existingQueueEntry = await _context.VirtualQueue
+                    .FirstOrDefaultAsync(q => q.UserId == userId && q.AttractionId == attractionId);
+
+                if (existingQueueEntry != null)
+                    return BadRequest("User is already in the queue for this attraction.");
+
+                // Check if the queue is full
+                if (attraction.VirtualQueue.Count < attraction.Capaciteit)
                 {
-                    UserId = nextUserId,
-                    AttractionId = AttractieId,
-                    EntryTime = entryTime,
-                    IsPresent = false
-                };
+                    var entryTime = DateTime.Now;
+                    var queueEntry = new VirtualQueue
+                    {
+                        UserId = userId,
+                        AttractionId = attractionId
+                    };
 
-                _context.VirtualQueue.Add(queueEntry);
-                await _context.SaveChangesAsync();
+                    _context.VirtualQueue.Add(queueEntry);
+                    await _context.SaveChangesAsync();
 
-                return Ok(queueEntry);
+                    return Ok(queueEntry);
+                }
+                else
+                {
+                    return BadRequest("The attraction queue is full.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("The attraction queue is full.");
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
             }
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal Server Error: {ex.Message}");
-        }
-        }
-
-
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VirtualQueue>>> GetQueues()
@@ -73,11 +78,36 @@ namespace api.Controllers
             var queue = await _context.VirtualQueue.FindAsync(id);
 
             if (queue == null)
-            {
                 return NotFound();
-            }
 
             return Ok(queue);
+        }
+
+        [HttpDelete("leave")]
+        public async Task<IActionResult> LeaveQueue([FromBody] VirtualQueue leaveRequest)
+        {
+            try
+            {
+                var userId = leaveRequest.UserId;
+                var attractionId = leaveRequest.AttractionId;
+
+                var queueEntry = await _context.VirtualQueue
+                    .FirstOrDefaultAsync(q => q.UserId == userId && q.AttractionId == attractionId);
+
+                if (queueEntry == null)
+                    return NotFound("User is not in the queue for this attraction.");
+
+                _context.VirtualQueue.Remove(queueEntry);
+                await _context.SaveChangesAsync();
+
+                return Ok($"User {userId} has left the queue for attraction {attractionId}.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
         }
     }
 }

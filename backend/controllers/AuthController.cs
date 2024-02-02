@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
 
         if (existingUser != null)
         {
-            return Ok(new { Token = "your_generated_token" });
+            return Ok(new { Token = "your_generated_token", UserId = existingUser.Id });
         }
         else
         {

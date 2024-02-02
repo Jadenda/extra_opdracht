@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { apiPath } from "./Helper/Api";
 import { useNavigate } from "react-router-dom";
@@ -52,11 +52,10 @@ import "./CSS/Theme.css";
   const neemDeel = async (attractieId) => {
     try {
       const userId = parseInt(localStorage.getItem("userId"), 10);
-      // const attractieId = attractions.attractieId;
-
+  
       console.log("Join queue met AttractieId:", attractieId);
       console.log("Join met User Id:", userId);
-
+  
       const response = await axios.post(
         apiPath + "api/Queue/join",
         { AttractieId: attractieId, UserId: userId },
@@ -69,7 +68,7 @@ import "./CSS/Theme.css";
 
       console.log(response.data);
       // Refresh the list of attractions after joining the queue
-      getAttracties();
+      // getAttracties();
     } catch (error) {
       console.error(error);
     }
