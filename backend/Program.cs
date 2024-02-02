@@ -1,23 +1,32 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlite("Data Source=app.db");
+});
+
 // Add services to the container.
+
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp", builder =>
-    {
-        builder.WithOrigins("http://localhost:3000") // Adjust this to the URL of your React app
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
 
 var app = builder.Build();
 
@@ -27,34 +36,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowReactApp");
-app.UseHttpsRedirection();
 
- // Apply CORS policy to the WebApplication instance
-
-var summaries = new[]
+// Voeg de volgende lijn toe om statische bestanden toegankelijk te maken
+app.UseStaticFiles(new StaticFileOptions
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Images")), // Verander "Images" naar de juiste mapnaam waarin je afbeeldingen zijn opgeslagen
+    RequestPath = "/Images" // Verander "/Images" naar het juiste pad waarmee je de bestanden wilt benaderen
+});
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+//app.UseHttpsRedirection();
+app.UseCors("AllowAll");
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
