@@ -22,7 +22,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -37,12 +36,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Voeg de volgende lijn toe om statische bestanden toegankelijk te maken
+// statische bestanden toegankelijk maken
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "Images")), // Verander "Images" naar de juiste mapnaam waarin je afbeeldingen zijn opgeslagen
-    RequestPath = "/Images" // Verander "/Images" naar het juiste pad waarmee je de bestanden wilt benaderen
+        Path.Combine(Directory.GetCurrentDirectory(), "Images")), 
+    RequestPath = "/Images" 
 });
 
 //app.UseHttpsRedirection();

@@ -12,7 +12,7 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // used for migrations check
+        // voor migration checks
         if (!optionsBuilder.IsConfigured)
         {
             optionsBuilder.UseSqlite(@"Data Source=app.db;foreign keys=true;");

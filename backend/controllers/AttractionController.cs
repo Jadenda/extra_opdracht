@@ -35,5 +35,27 @@ namespace api.Controllers
 
             return Ok(attraction);
         }
+        [HttpGet("attractions")]
+        public async Task<ActionResult<IEnumerable<Attractie>>> counter()
+        {
+            var attractions = await _context.Attracties
+                .Select(attraction => new Attractie
+                {
+                    AttractieId = attraction.AttractieId,
+                    Naam = attraction.Naam,
+                    Capaciteit = attraction.Capaciteit,
+                    Duur = attraction.Duur,
+                    Beschrijving = attraction.Beschrijving,
+                    AfbeeldingUrl = attraction.AfbeeldingUrl,
+                    Duration = attraction.Duration,
+                    VirtualQueueCount = _context.VirtualQueue
+                        .Where(q => q.AttractionId == attraction.AttractieId)
+                        .Count()
+                })
+                .ToListAsync();
+
+            return Ok(attractions);
+        }
+
     }
 }

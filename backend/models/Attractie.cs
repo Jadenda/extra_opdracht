@@ -9,4 +9,6 @@ public class Attractie
 
     public TimeSpan Duration { get; set; }
 
+    public int VirtualQueueCount { get; set; }
+
 }

@@ -18,9 +18,13 @@ import "./CSS/style.css";
   }, []);
 
   const getAttracties = async () => {
-    axios.get(apiPath + "api/Attraction").then((response) => {
+    try {
+      const response = await axios.get(apiPath + "api/Attraction/attractions");
+      console.log("API Response:", response.data);
       setAttractions(response.data);
-    });
+    } catch (error) {
+      console.error("API Error:", error);
+    }
   };
 
   const handleLogout = () => {
@@ -67,10 +71,10 @@ import "./CSS/style.css";
       );
   
       console.log(response.data);
-      // Refresh the list of attractions after joining the queue
       getAttracties();
     } catch (error) {
       console.error(error);
+      alert(error.response.data);
     }
   };
 
@@ -92,10 +96,10 @@ import "./CSS/style.css";
       );
 
       console.log(response.data);
-      // Refresh the list of attractions after leaving the queue
-      // getAttracties();
+      getAttracties();
     } catch (error) {
       console.error(error);
+      alert(error.response.data);
     }
   };
 
@@ -112,7 +116,7 @@ import "./CSS/style.css";
               style={{ maxWidth: "200px", maxHeight: "200px" }}
             />
             <p>{`Naam: ${attraction.naam || "Not available"}`}</p>
-            <p>{`Virtuele rij: ${attraction.VirtualQueue || "Er is geen rij"}`}</p>
+            <p>{`Aantal wachtende: ${attraction.virtualQueueCount || "Er is geen rij"}`}</p>
             <p>{`Capaciteit: ${attraction.capaciteit || "Not available"}`}</p>
             <p>{`Duur: ${(attraction.duration)}`}</p>
             <p>{`${(attraction.beschrijving)}`}</p>
@@ -127,4 +131,4 @@ import "./CSS/style.css";
   );
 };
 
-export default Dashboard;
+export default Dashboard; 

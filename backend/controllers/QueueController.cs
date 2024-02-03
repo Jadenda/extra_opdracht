@@ -33,7 +33,7 @@
                 .Where(q => q.UserId == userId)
                 .CountAsync();
 
-            // Check if the user has already joined two attractions
+            // Check of de gebruiker al in 2 attracties zit
             if (userQueueCount >= 2)
             {
                 return BadRequest("Je kan maar bij 2 attracties tegelijkertijd wachten");
@@ -44,7 +44,7 @@
                 if (attraction == null)
                     return NotFound("Attractie niet gevonden");
 
-                // Check if the user is already in the queue for the same attraction
+                // Check of hij al in de rij is
                 var existingQueueEntry = await _context.VirtualQueue
                     .FirstOrDefaultAsync(q => q.UserId == userId && q.AttractionId == attractionId);
 
@@ -55,7 +55,7 @@
                 .Where(q => q.AttractionId == attractionId)
                 .CountAsync();
 
-                //is attractie vol
+                //is de attractie vol
                 if (queueCountForAttraction < attraction.Capaciteit)
                 {
                     var entryTime = DateTime.Now;
@@ -113,7 +113,7 @@
                     .FirstOrDefaultAsync(q => q.UserId == userId && q.AttractionId == attractionId);
 
                 if (queueEntry == null)
-                    return NotFound("User is not in the queue for this attraction.");
+                    return NotFound("je staat niet in de rij voor deze attractie");
 
                 _context.VirtualQueue.Remove(queueEntry);
                 await _context.SaveChangesAsync();
