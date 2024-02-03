@@ -2,8 +2,7 @@ import React, { useRef, useState } from "react";
 import axios from "axios";
 import { SetAuthToken } from "./Helper/AuthToken";
 import {apiPath} from "./Helper/Api";
-import useLocalStorage from "use-local-storage";
-import App from './App';
+import "./CSS/style.css"
 
 import "./CSS/StichtingTheme.css"
 import { useNavigate } from "react-router-dom";
@@ -12,8 +11,6 @@ import { useNavigate } from "react-router-dom";
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const [error, setError] = useState(null);
-  const nav = useNavigate();
-
   const navigate = useNavigate();
 
 // const handleLogin = async () => {
@@ -39,7 +36,7 @@ import { useNavigate } from "react-router-dom";
   return (
     <div className="login-container">
       <h2>Login</h2>
-      {error && <p className="error-message">{error}</p>}
+      {/* {error && <p className="error-message">{error}</p>} */}
       <label htmlFor="username">Gebruikersnaam</label>
       <br/>
       <input 
@@ -49,7 +46,7 @@ import { useNavigate } from "react-router-dom";
       aria-label="Invoerveld gebruikersnaam"
       className="inputFontSize"
       />
-
+<br/>
       <label htmlFor="password">Wachtwoord</label>
       <br/>
       <input 
@@ -59,6 +56,7 @@ import { useNavigate } from "react-router-dom";
       aria-label="Invoerveld wachtwoord"
       className="inputFontSize"
       />
+      {error && <p className="error-message">{error}</p>}
 
       <button 
       aria-label="Log in"
