@@ -36,12 +36,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("gebruikers")]
-public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-{
-    var users = await _context.Users
-        .Include(u => u.VirtualQueue) 
-        .ToListAsync();
+    public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+    {
+        var users = await _context.Users
+            .Include(u => u.VirtualQueue) 
+            .ToListAsync();
 
-    return Ok(users);
-}
+        return Ok(users);
+    }
 }

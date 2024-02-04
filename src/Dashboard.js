@@ -13,7 +13,7 @@ import "./CSS/style.css";
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
-  console.log("Stored User Id:", storedUserId);
+    console.log("Stored User Id:", storedUserId);
     getAttracties();
   }, []);
 
@@ -104,6 +104,25 @@ import "./CSS/style.css";
     }
   };
 
+  const checkTurn = async (attractionId) => {
+    try {
+      const userId = parseInt(localStorage.getItem("userId"), 10);
+      const response = await axios.get(
+        `${apiPath}api/Queue/checkTurn/${attractionId}/${userId}`
+      );
+      alert(response.data);
+
+      if (response.data === "Veel plezier met de rit. Je wordt na de rit verwijderd!") {
+        setTimeout(() => {
+          verlaatRij(attractionId);
+        }, 4000); //je wordt binnen 4 seconden verwijderd. De rit duurt 4 seconden
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error checking turn: " + error.response.data);
+    }
+  };
+
   return (
     <div id="Attracties">
       <h3>Dashboard</h3>
@@ -122,8 +141,10 @@ import "./CSS/style.css";
             <p>{`Duur: ${(attraction.duration)}`}</p>
             <p>{`${(attraction.beschrijving)}`}</p>
             <button onClick={() => neemDeel(attraction.attractieId)}>Deelnemen aan wachtrij</button>
-            <button onClick={() => verlaatRij(attraction.attractieId)}>
-              Verlaat wachtrij</button>
+            <button onClick={() => verlaatRij(attraction.attractieId)}>Verlaat wachtrij</button>
+            <h4>Hieronder moet de medewerker aangeven of je aanwezig bent</h4>
+            <h4>Als je niet aanwezig bent verzoeken wij je om de wachtrij te verlaten</h4>
+            <button onClick={() => checkTurn(attraction.attractieId)}>Aanwezig</button>
           </li>
         ))}
       </ul>
