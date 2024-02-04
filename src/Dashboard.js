@@ -71,7 +71,8 @@ import "./CSS/style.css";
       );
   
       console.log(response.data);
-      getAttracties();
+      await getAttracties();
+      
     } catch (error) {
       console.error(error);
       alert(error.response.data);

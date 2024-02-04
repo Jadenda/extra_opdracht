@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import axios from "axios";
 import { SetAuthToken } from "./Helper/AuthToken";
 import {apiPath} from "./Helper/Api";
-import "./CSS/style.css"
-
+// import "./CSS/style.css"
+import "./CSS/Theme.css";
 import "./CSS/StichtingTheme.css"
 import { useNavigate } from "react-router-dom";
 

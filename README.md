@@ -19,3 +19,7 @@ voordat je inlogd:
 rechter muisknop > inspecteer > console
 
 ### Je kan ook met postman en swagger testen
+
+### Inloggen kan met de volgende accounts
+Gebruikersnamen: Jaden, Marcel of Remko
+Bijbehorende wachtwoorden: Jaden1, Marcel1 of Remko1
